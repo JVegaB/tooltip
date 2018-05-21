@@ -1,0 +1,113 @@
+@tooltip-background: rgba(40, 40, 40, 0.7);
+@tooltip-color: rgba(255, 255, 255, .9);
+@tooltip-none-color: rgba(0, 0, 0, 0);
+@tooltip-text-size: 14px;
+@tooltip-width: 80px;
+@tooltip-padding: 8px;
+@tooltip-radius: 3px;
+@tooltip-triangle-size: 8px;
+@tooltip-top-translation: (@tooltip-padding * 2) + @tooltip-triangle-size + 5px;
+@tooltip-height: (@tooltip-padding * 2);
+@tooltip-animation-duration: .5s;
+
+.tooltip-action
+{
+	position: relative;
+	cursor: pointer;
+
+	.tooltip
+	{
+		user-select: none;
+		cursor: default;
+		position: absolute;
+		display: none;
+		opacity: 0;
+		width: 0;
+		height: 0;
+		padding: 0;
+		text-align: center;
+		line-height: @tooltip-text-size;
+		font-size: @tooltip-text-size;
+		left: 50%;
+		top: -100%;
+		transform: translate(-50%, -@tooltip-top-translation);
+		background-color: @tooltip-background;
+		border-radius: @tooltip-radius;
+		color: @tooltip-none-color;
+		font-weight: 600;
+
+		&:after
+		{
+			content: '';
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translate(-50%, 0);
+			border-left: @tooltip-triangle-size solid transparent;
+			border-right: @tooltip-triangle-size solid transparent;
+			border-bottom: @tooltip-triangle-size solid transparent;
+		}
+
+	}	
+
+	&.actived
+	{
+		.tooltip
+		{
+			display: block;
+			animation-name: tooltip-animation;
+			animation-duration: @tooltip-animation-duration;
+			animation-fill-mode: forwards;
+
+
+			&:after
+			{
+				animation-name: tooltip-after-animation !important;
+				animation-duration: @tooltip-animation-duration !important;
+				animation-fill-mode: forwards !important;
+				animation-delay: @tooltip-animation-duration;
+			}
+		}
+	}
+}
+
+@keyframes tooltip-animation
+{
+	0% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	35% {
+		width: 80px;
+	}
+	45% {
+		height: @tooltip-height + floor(@tooltip-height/2);
+		padding: @tooltip-padding;
+	}
+	75% {
+		color: @tooltip-none-color;
+		height: @tooltip-height - floor(@tooltip-height/2);
+	}
+	100% {
+		color: @tooltip-color;
+		opacity: 1;
+		width: @tooltip-width;
+		height: @tooltip-height;
+		padding: @tooltip-padding;
+	}
+}
+
+@keyframes tooltip-after-animation
+{
+	30% {
+		border-top: @tooltip-triangle-size + floor(@tooltip-triangle-size/3) * 2 solid @tooltip-background;
+	}
+	50% {
+		border-top: @tooltip-triangle-size solid @tooltip-background;
+	}
+	100% {
+		border-top: @tooltip-triangle-size solid @tooltip-background;
+	}
+}
